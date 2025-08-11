@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Expense Tracker</title>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Smart Expense Tracker</h1>
+        <div class="sub">Track daily expenses — stored locally in your browser</div>
+      </div>
+      <div class="flex">
+        <button id="exportBtn" class="secondary">Export JSON</button>
+        <button id="clearAllBtn" class="secondary">Clear All</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <form id="expenseForm">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <strong>Add Expense</strong>
+            <small class="small">Tip: Press Enter to add</small>
+          </div>
+
+          <div class="row">
+            <input id="title" type="text" placeholder="Title (e.g. Lunch)" required />
+            <input id="amount" type="number" placeholder="Amount" step="0.01" min="0" required />
+          </div>
+
+          <div class="row">
+            <select id="category" required>
+              <option value="Food">Food</option>
+              <option value="Travel">Travel</option>
+              <option value="Bills">Bills</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Other">Other</option>
+            </select>
+            <input id="date" type="date" />
+          </div>
+
+          <div class="row">
+            <input id="note" type="text" placeholder="Note (optional)" />
+            <button id="addBtn" type="submit">Add</button>
+          </div>
+        </form>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="small">Spent Today</div>
+            <div id="todayTotal" class="num">₹0.00</div>
+          </div>
+          <div class="stat">
+            <div class="small">Spent This Month</div>
+            <div id="monthTotal" class="num">₹0.00</div>
+          </div>
+        </div>
+
+        <div class="list card" style="margin-top:12px">
+          <strong style="display:block;margin-bottom:8px">Recent Expenses</strong>
+          <div id="expensesList" class="list"></div>
+        </div>
+      </section>
+
+      <section class="card right-grid">
+        <div class="flex" style="justify-content:space-between">
+          <strong>Category Breakdown</strong>
+          <div class="small">Auto-updates as you add expenses</div>
+        </div>
+
+        <div class="chart-wrap card">
+          <canvas id="categoryChart" height="160"></canvas>
+        </div>
+
+        <div class="card" style="padding:12px;overflow:auto">
+          <strong style="display:block;margin-bottom:6px">All Records</strong>
+          <div id="allRecords" style="font-size:13px;color:var(--muted);max-height:260px;overflow:auto;padding-right:6px"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
