@@ -1,4 +1,3 @@
-// ---------- Utilities ----------
 const LS_KEY = 'smart_expense_data_v1';
 const categoryColors = {
   Food: '#ef4444',
@@ -9,27 +8,18 @@ const categoryColors = {
   Other: '#94a3b8'
 };
 
-function uid(){ 
-  return Date.now().toString(36) + Math.random().toString(36).slice(2,8) 
-}
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8) }
 
 function loadExpenses(){
   try{
     const raw = localStorage.getItem(LS_KEY);
     return raw ? JSON.parse(raw) : [];
-  }catch(e){ 
-    console.error('load error', e); 
-    return [] 
-  }
+  }catch(e){ console.error('load error', e); return [] }
 }
-function saveExpenses(arr){ 
-  localStorage.setItem(LS_KEY, JSON.stringify(arr)) 
-}
+function saveExpenses(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)) }
 
-// ---------- App state ----------
 let expenses = loadExpenses();
 
-// ---------- DOM ----------
 const form = document.getElementById('expenseForm');
 const titleIn = document.getElementById('title');
 const amountIn = document.getElementById('amount');
@@ -43,10 +33,8 @@ const monthTotal = document.getElementById('monthTotal');
 const exportBtn = document.getElementById('exportBtn');
 const clearAllBtn = document.getElementById('clearAllBtn');
 
-// default date to today
 dateIn.valueAsDate = new Date();
 
-// ---------- Chart ----------
 const ctx = document.getElementById('categoryChart').getContext('2d');
 let chart = new Chart(ctx, {
   type: 'doughnut',
@@ -57,7 +45,6 @@ let chart = new Chart(ctx, {
   }
 });
 
-// ---------- Render ----------
 function render(){
   renderList();
   renderAllRecords();
@@ -124,7 +111,6 @@ function renderChart(){
   chart.update();
 }
 
-// ---------- Actions ----------
 form.addEventListener('submit', (ev)=>{
   ev.preventDefault();
   const title = titleIn.value.trim();
@@ -136,7 +122,6 @@ form.addEventListener('submit', (ev)=>{
 
   const item = { id: uid(), title, amount: Number(amount), category, note, date };
   expenses.push(item);
-
   titleIn.value = '';
   amountIn.value = '';
   noteIn.value = '';
@@ -168,14 +153,12 @@ clearAllBtn.addEventListener('click', ()=>{
 
 function escapeHtml(s){
   return String(s||'').replace(/[&"'<>]/g, function(c){
-    return {'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'}[c];
+    return {'&':'&amp;','"':'&quot;','\'':'&#39;','<':'&lt;','>':'&gt;'}[c];
   });
 }
 
-// initial render
 render();
 
-// expose for debugging
 window._smartExpenses = {
   get: ()=>expenses,
   save: ()=>saveExpenses(expenses),
